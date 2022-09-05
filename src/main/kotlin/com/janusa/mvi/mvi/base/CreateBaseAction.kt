@@ -8,11 +8,9 @@ class CreateBaseAction : AnAction("Create _Base") {
     override fun actionPerformed(event: AnActionEvent) {
         createDirectory(event, "base")
         val directory = getDirectory(event, "base") ?: run {
-            sendErrorNotification(
+            sendPackageError(
                 event,
-                NotificationGroupIds.PACKAGE_CREATION_ERROR,
-                "Error creating base package",
-                "The files for base were not created. Try creating the package yourself and then running this command again"
+                "base",
             )
             return
         }
