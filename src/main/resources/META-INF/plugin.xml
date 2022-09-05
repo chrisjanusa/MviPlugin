@@ -29,6 +29,10 @@
                            displayType="BALLOON"/>
         <notificationGroup id="Package Creation Error"
                            displayType="BALLOON"/>
+        <notificationGroup id="File Parsing Error"
+                           displayType="BALLOON"/>
+        <notificationGroup id="Feature Error"
+                           displayType="BALLOON"/>
     </extensions>
     <actions>
         <group
