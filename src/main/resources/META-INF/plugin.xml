@@ -24,7 +24,15 @@
     <!-- Extension points defined by the plugin.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
     <extensions defaultExtensionNs="com.intellij">
-
+        <projectService serviceImplementation="com.janusa.mvi.mvi.base.BasePathService"/>
+        <notificationGroup id="Gradle Error"
+                           displayType="BALLOON"/>
+        <notificationGroup id="Package Creation Error"
+                           displayType="BALLOON"/>
+        <notificationGroup id="File Parsing Error"
+                           displayType="BALLOON"/>
+        <notificationGroup id="Feature Error"
+                           displayType="BALLOON"/>
     </extensions>
     <actions>
         <group
@@ -55,12 +63,39 @@
             </action>
             <action
                     id="CreateAction"
-                    class="com.janusa.mvi.mvi.action.CreateActionAction"
+                    class="com.janusa.mvi.mvi.screen.CreateActionAction"
                     text="Create Action"
                     description="Create an Action for the Feature"
                     icon="AllIcons.FileTypes.AddAny">
                 <keyboard-shortcut keymap="$default" first-keystroke="meta alt A"/>
             </action>
+            <action
+                    id="CreateUpdater"
+                    class="com.janusa.mvi.mvi.screen.CreateUpdaterAction"
+                    text="Create Updater"
+                    description="Create an Updater for the Feature"
+                    icon="AllIcons.FileTypes.AddAny">
+                <keyboard-shortcut keymap="$default" first-keystroke="meta alt U"/>
+            </action>
+            <action
+                    id="CreateEvent"
+                    class="com.janusa.mvi.mvi.screen.CreateEventAction"
+                    text="Create Event"
+                    description="Create an Event for the Feature"
+                    icon="AllIcons.FileTypes.AddAny">
+                <keyboard-shortcut keymap="$default" first-keystroke="meta alt E"/>
+            </action>
         </group>
+        <action
+                id="CreateUpdaterFromState"
+                class="com.janusa.mvi.mvi.screen.CreateUpdaterFromStateAction"
+                text="Create Updater"
+                description="Create an Updater for the Feature"
+                icon="AllIcons.FileTypes.AddAny">
+            <add-to-group
+                    group-id="EditorPopupMenu"
+                    anchor="first"/>
+            <keyboard-shortcut keymap="$default" first-keystroke="meta alt U"/>
+        </action>
     </actions>
 </idea-plugin>

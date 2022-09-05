@@ -6,8 +6,10 @@ import com.intellij.openapi.application.WriteAction
 import com.intellij.openapi.fileTypes.FileType
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.PsiDirectory
+import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFileFactory
 import com.intellij.util.ThrowableRunnable
+import com.janusa.mvi.mvi.base.BasePathService
 import org.jetbrains.kotlin.idea.KotlinIconProviderService
 import javax.swing.Icon
 
@@ -68,5 +70,27 @@ open class FileTemplate(val title: String, val content: String)
 fun PsiDirectory.getPackage() = virtualFile.getPackage()
 
 fun VirtualFile.getPackage(): String {
-    return path.substringAfter("main/").substringAfter("/").replace('/', '.')
+    return path.pathToPackage()
+}
+
+fun String.pathToPackage(): String {
+    return this.substringAfter("main/").substringAfter("/").replace('/', '.')
+}
+
+fun PsiElement.getFileName() = this.containingFile?.name
+
+fun PsiElement.getFileText() = this.containingFile?.text
+
+private fun getBasePath(event: AnActionEvent): String? {
+    val project = event.getData(PlatformDataKeys.PROJECT) ?: return null
+    return BasePathService.getService(project).basePath
+}
+
+fun getBasePackage(event: AnActionEvent): String {
+    return getBasePath(event)?.pathToPackage() ?: ""
+}
+
+fun saveBasePath(event: AnActionEvent, path: String) {
+    val project = event.getData(PlatformDataKeys.PROJECT) ?: return
+    BasePathService.getService(project).basePath = path
 }

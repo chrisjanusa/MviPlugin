@@ -6,18 +6,18 @@ import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.PsiDirectory
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiManager
-import com.janusa.mvi.mvi.action.ActionFeatureObtainer
-import com.janusa.mvi.mvi.action.ActionPackageFeatureObtainer
-import com.janusa.mvi.mvi.screen.ScreenFeatureObtainer
-import com.janusa.mvi.mvi.screen.StateFeatureObtainer
-import com.janusa.mvi.mvi.screen.ViewModelObtainer
+import com.janusa.mvi.mvi.screen.*
 
 val featureFileObtainers = listOf(
     ActionFeatureObtainer,
     StateFeatureObtainer,
     ScreenFeatureObtainer,
     ViewModelObtainer,
-    ActionPackageFeatureObtainer
+    ActionPackageFeatureObtainer,
+    UpdaterFeatureObtainer,
+    UpdaterPackageFeatureObtainer,
+    EventFeatureObtainer,
+    EventPackageFeatureObtainer
 )
 
 fun getFeature(event: AnActionEvent): String? {
@@ -31,6 +31,13 @@ fun getFeature(event: AnActionEvent): String? {
         }
     }
     return null
+}
+
+fun getFeatureFromStateEditor(event: AnActionEvent): String? {
+    val virtualFile = event.getData(PlatformDataKeys.VIRTUAL_FILE) ?: return null
+    val featureName = virtualFile.name.substringBefore(stateFileSuffix, "")
+    if (featureName.isBlank()) return null
+    return featureName
 }
 
 fun getFeatureDirectory(event: AnActionEvent, featureName: String): PsiDirectory? {

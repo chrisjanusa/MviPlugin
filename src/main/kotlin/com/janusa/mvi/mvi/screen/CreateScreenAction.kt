@@ -2,11 +2,9 @@ package com.janusa.mvi.mvi.screen
 
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
-import com.janusa.mvi.mvi.action.ActionTemplate
 import com.janusa.mvi.mvi.helpers.*
 import com.janusa.mvi.mvi.ui.NameQuestionDialog
 import com.janusa.mvi.mvi.ui.ScreenPromptHolder
-import java.io.FileNotFoundException
 
 class CreateScreenAction : AnAction("Create _Screen") {
     override fun actionPerformed(event: AnActionEvent) {
@@ -21,26 +19,59 @@ class CreateScreenAction : AnAction("Create _Screen") {
         dialog.showAndGet()
         val feature = screenPromptHolder.name
         createDirectory(event, feature.lowercase())
-        val featureDirectory = getDirectory(event, feature.lowercase())
-            ?: throw FileNotFoundException("Could not create actions package")
-        createFile(
-            event,
-            featureDirectory,
-            ScreenTemplate(feature, screenPromptHolder.isStartScreen, screenPromptHolder.initAction)
-        )
+        val featureDirectory = getDirectory(event, feature.lowercase()) ?: run {
+            sendPackageError(event, feature.lowercase())
+            return
+        }
+        val basePackage = getBasePackage(event)
         createFile(event, featureDirectory, StateTemplate(feature))
-        createFile(event, featureDirectory, ViewModelTemplate(feature))
+        createFile(event, featureDirectory, ViewModelTemplate(feature, basePackage))
         if (screenPromptHolder.initAction) {
-            createSubDirectory(featureDirectory, "actions")
-            val actionDirectory = getDirectoryFromParent(featureDirectory, "actions")
-                ?: throw FileNotFoundException("Could not create actions package")
+            createSubDirectory(featureDirectory, ActionSupportFile.packageName)
+            val actionDirectory = getDirectoryFromParent(featureDirectory, ActionSupportFile.packageName) ?: run {
+                sendPackageError(event, ActionSupportFile.packageName)
+                createFile(
+                    event,
+                    featureDirectory,
+                    ScreenTemplate(
+                        feature,
+                        screenPromptHolder.isStartScreen,
+                        screenPromptHolder.initAction,
+                        basePackage
+                    )
+                )
+                return
+            }
             createFile(
                 event,
                 actionDirectory,
                 ActionTemplate(
                     "Init${feature}",
                     feature,
-                    featureDirectory.getPackage()
+                    featureDirectory.getPackage(),
+                    basePackage
+                )
+            )
+            createFile(
+                event,
+                featureDirectory,
+                ScreenTemplate(
+                    feature,
+                    screenPromptHolder.isStartScreen,
+                    screenPromptHolder.initAction,
+                    basePackage,
+                    actionDirectory.getPackage()
+                )
+            )
+        } else {
+            createFile(
+                event,
+                featureDirectory,
+                ScreenTemplate(
+                    feature,
+                    screenPromptHolder.isStartScreen,
+                    screenPromptHolder.initAction,
+                    basePackage
                 )
             )
         }
