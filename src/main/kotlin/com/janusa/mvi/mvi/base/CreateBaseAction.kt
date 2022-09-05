@@ -22,6 +22,6 @@ class CreateBaseAction : AnAction("Create _Base") {
     }
 
     override fun update(event: AnActionEvent) {
-        enableIfDirectory(event)
+        event.presentation.isEnabledAndVisible = isDirectory(event) && !featureIsObtainable(event)
     }
 }
