@@ -5,17 +5,33 @@ import com.intellij.openapi.actionSystem.AnActionEvent
 import com.janusa.mvi.mvi.helpers.*
 import com.janusa.mvi.mvi.ui.NameDialog
 import com.janusa.mvi.mvi.ui.NameHolder
-import java.io.FileNotFoundException
 
 open class CreateSupportFileAction(private val fileType: SupportFile) : AnAction("Create _${fileType.suffix}") {
     override fun actionPerformed(event: AnActionEvent) {
-        val feature = getFeature(event)
-            ?: throw FileNotFoundException("Could not calculate feature name - Please try again basing off an MVI Screen implementation")
-        val featureDirectory = getFeatureDirectory(event, feature)
-            ?: throw FileNotFoundException("Could not find the feature package with name equal to lowercase feature name")
+        val feature = getFeature(event) ?: run {
+            sendFeatureError(
+                event,
+                MissingFeatureAttribute.NAME,
+                fileType.suffix
+            )
+            return
+        }
+        val featureDirectory = getFeatureDirectory(event, feature) ?: run {
+            sendFeatureError(
+                event,
+                MissingFeatureAttribute.PACKAGE,
+                fileType.suffix
+            )
+            return
+        }
         createSubDirectory(featureDirectory, fileType.packageName)
-        val directory = getDirectoryFromParent(featureDirectory, fileType.packageName)
-            ?: throw FileNotFoundException("Could not create ${fileType.packageName} package")
+        val directory = getDirectoryFromParent(featureDirectory, fileType.packageName) ?: run {
+            sendPackageError(
+                event,
+                fileType.packageName
+            )
+            return
+        }
         val nameHolder = NameHolder()
         val dialog = NameDialog(
             "Create New ${fileType.suffix}",
@@ -28,7 +44,12 @@ open class CreateSupportFileAction(private val fileType: SupportFile) : AnAction
         createFile(
             event,
             directory,
-            fileType.getTemplate(nameHolder.name, feature, directory.getFeatureDirectoryPath(feature))
+            fileType.getTemplate(
+                nameHolder.name,
+                feature,
+                directory.getFeatureDirectoryPath(feature),
+                getBasePackage(event)
+            )
         )
     }
 

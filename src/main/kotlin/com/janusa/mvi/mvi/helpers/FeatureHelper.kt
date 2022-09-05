@@ -15,7 +15,9 @@ val featureFileObtainers = listOf(
     ViewModelObtainer,
     ActionPackageFeatureObtainer,
     UpdaterFeatureObtainer,
-    UpdaterPackageFeatureObtainer
+    UpdaterPackageFeatureObtainer,
+    EventFeatureObtainer,
+    EventPackageFeatureObtainer
 )
 
 fun getFeature(event: AnActionEvent): String? {
@@ -29,6 +31,13 @@ fun getFeature(event: AnActionEvent): String? {
         }
     }
     return null
+}
+
+fun getFeatureFromStateEditor(event: AnActionEvent): String? {
+    val virtualFile = event.getData(PlatformDataKeys.VIRTUAL_FILE) ?: return null
+    val featureName = virtualFile.name.substringBefore(stateFileSuffix, "")
+    if (featureName.isBlank()) return null
+    return featureName
 }
 
 fun getFeatureDirectory(event: AnActionEvent, featureName: String): PsiDirectory? {

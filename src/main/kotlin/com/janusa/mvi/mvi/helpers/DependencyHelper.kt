@@ -7,9 +7,6 @@ fun addNavigationDeps(buildFileManager: GradleFileManager, event: AnActionEvent)
     buildFileManager.addDependency("implementation", "androidx.navigation:navigation-compose", "2.5.1")
     buildFileManager.addDependency("implementation", "io.github.raamcosta.compose-destinations:core", "1.7.17-beta")
     buildFileManager.addDependency("ksp", "io.github.raamcosta.compose-destinations:ksp", "1.7.17-beta")
-    val kotlinVersion = getKotlinVersion(event)
-    buildFileManager.addPluginComment("This must match the kotlin version")
-    buildFileManager.addPlugin("com.google.devtools.ksp", "$kotlinVersion+")
     buildFileManager.addAndroid(
         "\tapplicationVariants.all { variant ->\n" +
                 "\t\tkotlin.sourceSets {\n" +
@@ -20,4 +17,16 @@ fun addNavigationDeps(buildFileManager: GradleFileManager, event: AnActionEvent)
                 "\t}",
         "kotlin.srcDir(\"build/generated/ksp/\${variant.name}/kotlin\")"
     )
+    val kotlinVersion = getKotlinVersion(event)
+    if (kotlinVersion == null) {
+        sendErrorNotification(
+            event,
+            NotificationGroupIds.GRADLE_ERROR,
+            "Error finding kotlin version from project build.gradle file",
+            "ksp plugin was not added automatically so make sure to add it manually"
+        )
+    } else {
+        buildFileManager.addPluginComment("This must match the kotlin version")
+        buildFileManager.addPlugin("com.google.devtools.ksp", "$kotlinVersion+")
+    }
 }

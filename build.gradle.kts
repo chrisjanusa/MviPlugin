@@ -1,23 +1,25 @@
 plugins {
   id("java")
   id("org.jetbrains.kotlin.jvm") version "1.6.20"
-  id("org.jetbrains.intellij") version "1.9.0"
+    id("org.jetbrains.intellij") version "1.9.0"
 }
 
 group = "com.janusa.mvi"
 version = "1.0-SNAPSHOT"
 
 repositories {
-  mavenCentral()
+    mavenCentral()
 }
+
+apply(plugin = "kotlin")
 
 // Configure Gradle IntelliJ Plugin
 // Read more: https://plugins.jetbrains.com/docs/intellij/tools-gradle-intellij-plugin.html
 intellij {
-  version.set("2022.2.1")
-  type.set("IC") // Target IDE Platform
+    version.set("2022.2.1")
+    type.set("IC") // Target IDE Platform
 
-  plugins.set(listOf())
+    plugins.set(listOf("org.jetbrains.kotlin"))
 }
 
 dependencies {

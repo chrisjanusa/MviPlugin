@@ -1,18 +1,27 @@
 package com.janusa.mvi.mvi.screen
 
 import com.intellij.psi.PsiElement
-import com.intellij.psi.PsiFile
 import com.janusa.mvi.mvi.helpers.FeatureObtainer
 import com.janusa.mvi.mvi.helpers.FileTemplate
+import com.janusa.mvi.mvi.helpers.getFileName
 import org.jetbrains.kotlin.util.capitalizeDecapitalize.decapitalizeAsciiOnly
 
 const val screenFileSuffix = "Screen"
 
 object ScreenFeatureObtainer : CoreFeatureObtainer(screenFileSuffix)
 
-class ScreenTemplate(name: String, firstScreen: Boolean, initAction: Boolean) : FileTemplate(
+class ScreenTemplate(
+    name: String,
+    firstScreen: Boolean,
+    initAction: Boolean,
+    basePackage: String,
+    actionsPackage: String = ""
+) : FileTemplate(
     title = "$name$screenFileSuffix",
-    content = "import androidx.compose.runtime.Composable\n" +
+    content = (if (basePackage.isNotBlank()) "import $basePackage.MVIScreen\n" +
+            "import $basePackage.BaseAction\n" else "") +
+            (if (actionsPackage.isNotBlank()) "import $actionsPackage.Init${name}Action\n" else "") +
+            "import androidx.compose.runtime.Composable\n" +
             "import com.ramcosta.composedestinations.annotation.Destination\n" +
             "import com.ramcosta.composedestinations.navigation.DestinationsNavigator\n" +
             "\n" +
@@ -44,9 +53,10 @@ const val viewModelFileSuffix = "ViewModel"
 
 object ViewModelObtainer : CoreFeatureObtainer(viewModelFileSuffix)
 
-class ViewModelTemplate(name: String) : FileTemplate(
+class ViewModelTemplate(name: String, basePackage: String) : FileTemplate(
     title = "$name$viewModelFileSuffix",
-    content = "import android.os.Bundle\n" +
+    content = (if (basePackage.isNotBlank()) "import $basePackage.MVIViewModel\n" else "") +
+            "import android.os.Bundle\n" +
             "import androidx.compose.runtime.Composable\n" +
             "import androidx.compose.ui.platform.LocalSavedStateRegistryOwner\n" +
             "import androidx.lifecycle.AbstractSavedStateViewModelFactory\n" +
@@ -95,8 +105,8 @@ class ViewModelTemplate(name: String) : FileTemplate(
 
 open class CoreFeatureObtainer(private val suffix: String) : FeatureObtainer {
 
-    override fun sameFileType(psiElement: PsiElement) = (psiElement as? PsiFile)?.name?.contains(suffix) == true
+    override fun sameFileType(psiElement: PsiElement) = psiElement.getFileName()?.contains(suffix) == true
 
-    override fun getFeature(psiElement: PsiElement) = (psiElement as? PsiFile)?.name?.substringBefore(suffix)
+    override fun getFeature(psiElement: PsiElement) = psiElement.getFileName()?.substringBefore(suffix)
 
 }

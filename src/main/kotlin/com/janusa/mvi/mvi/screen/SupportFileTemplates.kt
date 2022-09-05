@@ -6,11 +6,13 @@ import com.intellij.psi.PsiFile
 import com.intellij.psi.util.childrenOfType
 import com.janusa.mvi.mvi.helpers.FeatureObtainer
 import com.janusa.mvi.mvi.helpers.FileTemplate
+import com.janusa.mvi.mvi.helpers.getFileName
+import com.janusa.mvi.mvi.helpers.getFileText
 
 sealed class SupportFile(
     val packageName: String,
     val suffix: String,
-    val getTemplate: (String, String, String) -> FileTemplate
+    val getTemplate: (String, String, String, String) -> FileTemplate
 )
 
 open class SupportFileTemplate(name: String, content: String, fileType: SupportFile) : FileTemplate(
@@ -21,10 +23,10 @@ open class SupportFileTemplate(name: String, content: String, fileType: SupportF
 open class SupportFeatureObtainer(private val fileType: SupportFile) : FeatureObtainer {
 
     override fun sameFileType(psiElement: PsiElement) =
-        (psiElement as? PsiFile)?.name?.contains(fileType.suffix) == true
+        psiElement.getFileName()?.contains(fileType.suffix) == true
 
     override fun getFeature(psiElement: PsiElement) =
-        (psiElement as? PsiFile)?.text?.substringAfter("Base${fileType.suffix}<")?.substringBefore("State")
+        psiElement.getFileText()?.substringAfter("Base${fileType.suffix}<")?.substringBefore("State")
 
 }
 
