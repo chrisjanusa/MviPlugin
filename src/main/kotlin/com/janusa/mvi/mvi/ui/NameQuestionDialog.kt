@@ -32,7 +32,7 @@ class NameQuestionDialog(
         }
         group("Files to Be Generated", indent = true) {
             filesSuffixes.forEach {
-                row("${result.name}$it.kt") {}
+                row("{Name Provided Above}$it.kt") {}
             }
         }
         row {
