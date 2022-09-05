@@ -4,6 +4,7 @@ import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.PlatformDataKeys
 import com.intellij.openapi.application.WriteAction
 import com.intellij.openapi.fileTypes.FileType
+import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.PsiDirectory
 import com.intellij.psi.PsiFileFactory
 import com.intellij.util.ThrowableRunnable
@@ -23,17 +24,25 @@ fun createDirectory(event: AnActionEvent, name: String) {
     }
 }
 
+fun createSubDirectory(parentDirectory: PsiDirectory, name: String) {
+    if (parentDirectory.findSubdirectory(name) == null) {
+        WriteAction.run(ThrowableRunnable { parentDirectory.createSubdirectory(name) })
+    }
+}
+
 fun getDirectory(event: AnActionEvent, name: String): PsiDirectory? {
     val parentDirectory = event.getData(PlatformDataKeys.PSI_ELEMENT) as? PsiDirectory ?: return null
+    return parentDirectory.findSubdirectory(name)
+}
+
+fun getDirectoryFromParent(parentDirectory: PsiDirectory, name: String): PsiDirectory? {
     return parentDirectory.findSubdirectory(name)
 }
 
 fun createFile(event: AnActionEvent, directory: PsiDirectory, template: FileTemplate) {
     if (directory.findFile("${template.title}.kt") != null) return
     val project = event.getData(PlatformDataKeys.PROJECT) ?: return
-    val virtualFile = event.getData(PlatformDataKeys.VIRTUAL_FILE) ?: return
-    var packageName = virtualFile.path.substringAfter("main/").substringAfter("/").replace('/', '.')
-    packageName = "package " + packageName + ".${directory.name}"
+    val packageName = "package ${directory.getPackage()}"
     val fileContent = "$packageName\n\n${template.content}"
     WriteAction.run(ThrowableRunnable {
         val file =
@@ -55,3 +64,9 @@ object KotlinFileType : FileType {
 }
 
 open class FileTemplate(val title: String, val content: String)
+
+fun PsiDirectory.getPackage() = virtualFile.getPackage()
+
+fun VirtualFile.getPackage(): String {
+    return path.substringAfter("main/").substringAfter("/").replace('/', '.')
+}

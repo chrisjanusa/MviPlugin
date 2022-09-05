@@ -2,10 +2,10 @@ package com.janusa.mvi.mvi.helpers
 
 import com.intellij.openapi.actionSystem.AnActionEvent
 
-fun enableIfDirectory(event: AnActionEvent) {
-    event.presentation.isEnabledAndVisible = isDirectory(event)
+fun featureIsObtainable(event: AnActionEvent): Boolean {
+    return getFeature(event) != null
 }
 
 fun enableIfAnyEnabled(event: AnActionEvent) {
-    event.presentation.isEnabledAndVisible = isDirectory(event)
+    event.presentation.isEnabledAndVisible = isDirectory(event) || featureIsObtainable(event)
 }

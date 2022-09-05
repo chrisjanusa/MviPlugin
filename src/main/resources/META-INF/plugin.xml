@@ -38,12 +38,28 @@
                     anchor="after"
                     relative-to-action="WeighingNewGroup"/>
             <action
-                    id="MoveResource"
+                    id="CreateBase"
                     class="com.janusa.mvi.mvi.base.CreateBaseAction"
                     text="Create Base Package"
-                    description="Move all variations of a resource from one module to another"
+                    description="Create all files required for the base of the architecture"
                     icon="AllIcons.Actions.ModuleDirectory">
                 <keyboard-shortcut keymap="$default" first-keystroke="meta alt B"/>
+            </action>
+            <action
+                    id="CreateScreen"
+                    class="com.janusa.mvi.mvi.screen.CreateScreenAction"
+                    text="Create New Screen Package"
+                    description="Create all files required for a new feature/screen"
+                    icon="AllIcons.Actions.ModuleDirectory">
+                <keyboard-shortcut keymap="$default" first-keystroke="meta alt S"/>
+            </action>
+            <action
+                    id="CreateAction"
+                    class="com.janusa.mvi.mvi.action.CreateActionFromFeatureAction"
+                    text="Create Action"
+                    description="Create an Action for the Feature"
+                    icon="AllIcons.FileTypes.AddAny">
+                <keyboard-shortcut keymap="$default" first-keystroke="meta alt A"/>
             </action>
         </group>
     </actions>
