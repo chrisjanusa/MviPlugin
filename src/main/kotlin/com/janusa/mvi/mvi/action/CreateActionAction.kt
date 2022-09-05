@@ -7,7 +7,7 @@ import com.janusa.mvi.mvi.ui.NameDialog
 import com.janusa.mvi.mvi.ui.NameHolder
 import java.io.FileNotFoundException
 
-class CreateActionFromFeatureAction : AnAction("Create _Action") {
+class CreateActionAction : AnAction("Create _Action") {
     override fun actionPerformed(event: AnActionEvent) {
         val feature = getFeature(event)
             ?: throw FileNotFoundException("Could not calculate feature name - Please try again basing off an MVI Screen implementation")
