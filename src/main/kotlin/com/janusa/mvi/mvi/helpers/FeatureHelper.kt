@@ -6,18 +6,16 @@ import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.PsiDirectory
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiManager
-import com.janusa.mvi.mvi.action.ActionFeatureObtainer
-import com.janusa.mvi.mvi.action.ActionPackageFeatureObtainer
-import com.janusa.mvi.mvi.screen.ScreenFeatureObtainer
-import com.janusa.mvi.mvi.screen.StateFeatureObtainer
-import com.janusa.mvi.mvi.screen.ViewModelObtainer
+import com.janusa.mvi.mvi.screen.*
 
 val featureFileObtainers = listOf(
     ActionFeatureObtainer,
     StateFeatureObtainer,
     ScreenFeatureObtainer,
     ViewModelObtainer,
-    ActionPackageFeatureObtainer
+    ActionPackageFeatureObtainer,
+    UpdaterFeatureObtainer,
+    UpdaterPackageFeatureObtainer
 )
 
 fun getFeature(event: AnActionEvent): String? {

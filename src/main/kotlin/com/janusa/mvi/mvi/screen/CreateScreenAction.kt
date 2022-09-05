@@ -2,7 +2,6 @@ package com.janusa.mvi.mvi.screen
 
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
-import com.janusa.mvi.mvi.action.ActionTemplate
 import com.janusa.mvi.mvi.helpers.*
 import com.janusa.mvi.mvi.ui.NameQuestionDialog
 import com.janusa.mvi.mvi.ui.ScreenPromptHolder

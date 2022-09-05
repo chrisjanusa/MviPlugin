@@ -55,11 +55,19 @@
             </action>
             <action
                     id="CreateAction"
-                    class="com.janusa.mvi.mvi.action.CreateActionAction"
+                    class="com.janusa.mvi.mvi.screen.CreateActionAction"
                     text="Create Action"
                     description="Create an Action for the Feature"
                     icon="AllIcons.FileTypes.AddAny">
                 <keyboard-shortcut keymap="$default" first-keystroke="meta alt A"/>
+            </action>
+            <action
+                    id="CreateUpdater"
+                    class="com.janusa.mvi.mvi.screen.CreateUpdaterAction"
+                    text="Create Updater"
+                    description="Create an Updater for the Feature"
+                    icon="AllIcons.FileTypes.AddAny">
+                <keyboard-shortcut keymap="$default" first-keystroke="meta alt U"/>
             </action>
         </group>
     </actions>
