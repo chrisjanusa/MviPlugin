@@ -19,19 +19,27 @@ class CreateBaseAction : AnAction("Create _Base") {
         createFile(event, directory, BaseUpdaterTemplate)
         createFile(event, directory, BaseEventTemplate)
         createFile(event, directory, MVIViewModelTemplate)
-        val buildGradle = getGradle(event)
-        if (buildGradle == null) {
-            sendErrorNotification(
-                event,
-                NotificationGroupIds.GRADLE_ERROR,
-                "Error finding Module build.gradle file",
-                "Navigation Dependencies were not added automatically so make sure to add them manually"
-            )
-        } else {
-            val buildFileManager = GradleFileManager(buildGradle)
-            addNavigationDeps(buildFileManager, event)
-            buildFileManager.writeToGradle()
-            syncProject(event)
+        val dependencyHolder = UseDependencyHolder()
+        val dialog = AddDependencyDialog(
+            "Add Navigation Dependencies?",
+            dependencyHolder,
+        )
+        dialog.showAndGet()
+        if (dependencyHolder.addDependency) {
+            val buildGradle = getGradle(event)
+            if (buildGradle == null) {
+                sendErrorNotification(
+                    event,
+                    NotificationGroupIds.GRADLE_ERROR,
+                    "Error finding Module build.gradle file",
+                    "Navigation Dependencies were not added automatically so make sure to add them manually"
+                )
+            } else {
+                val buildFileManager = GradleFileManager(buildGradle)
+                addNavigationDeps(buildFileManager, event)
+                buildFileManager.writeToGradle()
+                syncProject(event)
+            }
         }
         saveBasePath(event, directory.virtualFile.path)
     }
