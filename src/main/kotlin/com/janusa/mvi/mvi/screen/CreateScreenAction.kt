@@ -3,8 +3,8 @@ package com.janusa.mvi.mvi.screen
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.janusa.mvi.mvi.helpers.*
-import com.janusa.mvi.mvi.ui.NameQuestionDialog
-import com.janusa.mvi.mvi.ui.ScreenPromptHolder
+import com.janusa.mvi.mvi.screen.ui.NameQuestionDialog
+import com.janusa.mvi.mvi.screen.ui.ScreenPromptHolder
 
 class CreateScreenAction : AnAction("Create _Screen") {
     override fun actionPerformed(event: AnActionEvent) {

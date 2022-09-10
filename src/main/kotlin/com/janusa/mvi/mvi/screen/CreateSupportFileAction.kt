@@ -3,8 +3,8 @@ package com.janusa.mvi.mvi.screen
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.janusa.mvi.mvi.helpers.*
-import com.janusa.mvi.mvi.ui.NameDialog
-import com.janusa.mvi.mvi.ui.NameHolder
+import com.janusa.mvi.mvi.screen.ui.NameDialog
+import com.janusa.mvi.mvi.screen.ui.NameHolder
 
 open class CreateSupportFileAction(private val fileType: SupportFile) : AnAction("Create _${fileType.suffix}") {
     override fun actionPerformed(event: AnActionEvent) {

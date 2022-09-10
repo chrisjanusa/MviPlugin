@@ -1,4 +1,4 @@
-package com.janusa.mvi.mvi.ui
+package com.janusa.mvi.mvi.screen.ui
 
 import com.intellij.openapi.ui.DialogPanel
 import com.intellij.openapi.ui.DialogWrapper
