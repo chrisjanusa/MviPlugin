@@ -8,6 +8,7 @@ import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.PsiDirectory
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFileFactory
+import com.intellij.psi.PsiManager
 import com.intellij.util.ThrowableRunnable
 import com.janusa.mvi.mvi.base.BasePathService
 import org.jetbrains.kotlin.idea.KotlinIconProviderService
@@ -93,4 +94,25 @@ fun getBasePackage(event: AnActionEvent): String {
 fun saveBasePath(event: AnActionEvent, path: String) {
     val project = event.getData(PlatformDataKeys.PROJECT) ?: return
     BasePathService.getService(project).basePath = path
+}
+
+
+fun getBase(event: AnActionEvent): String? {
+    val virtualFile = event.getData(PlatformDataKeys.VIRTUAL_FILE) ?: return null
+    val basePathStored = getBasePath(event)
+    if (!basePathStored.isNullOrBlank()) {
+        return basePathStored
+    }
+    if (virtualFile.parent.name == "base") {
+        return virtualFile.parent.path
+    }
+    return null
+}
+
+fun getBaseDirectory(event: AnActionEvent): PsiDirectory? {
+    val basePath = getBase(event) ?: return null
+    val virtualFile = event.getData(PlatformDataKeys.VIRTUAL_FILE) ?: return null
+    val virtualBaseDir = virtualFile.fileSystem.findFileByPath(basePath) ?: return null
+    val project = event.getData(PlatformDataKeys.PROJECT) ?: return null
+    return PsiManager.getInstance(project).findDirectory(virtualBaseDir)
 }

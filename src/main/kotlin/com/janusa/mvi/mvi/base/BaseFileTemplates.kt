@@ -100,3 +100,12 @@ object MVIViewModelTemplate : FileTemplate(
             "    }\n" +
             "}"
 )
+
+object DataResultTemplate : FileTemplate(
+    title = "DataResult",
+    content = "sealed class DataResult<out T> {\n" +
+            "    data class Success<T> (val data : T) : DataResult<T>()\n" +
+            "    object Loading : DataResult<Nothing>()\n" +
+            "    data class Error(val errorMessage: String) : DataResult<Nothing>()\n" +
+            "}"
+)

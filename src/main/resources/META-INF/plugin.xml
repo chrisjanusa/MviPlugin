@@ -85,6 +85,14 @@
                     icon="AllIcons.FileTypes.AddAny">
                 <keyboard-shortcut keymap="$default" first-keystroke="meta alt E"/>
             </action>
+            <action
+                    id="CreateDataResultAction"
+                    class="com.janusa.mvi.mvi.base.CreateDataResultAction"
+                    text="Create DataResult"
+                    description="Create a DataResult wrapper class"
+                    icon="AllIcons.FileTypes.AddAny">
+                <keyboard-shortcut keymap="$default" first-keystroke="meta alt D"/>
+            </action>
         </group>
         <action
                 id="CreateUpdaterFromState"
