@@ -40,8 +40,8 @@ class CreateUpdaterFromStateAction : AnAction("Create _${UpdaterSupportFile.suff
             event,
             directory,
             UpdaterFromStateTemplate(
-                stateValue.name,
-                stateValue.type,
+                stateValue.name.trim(),
+                stateValue.type.trim(),
                 feature,
                 directory.getFeatureDirectoryPath(feature),
                 getBasePackage(event)

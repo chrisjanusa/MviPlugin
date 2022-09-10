@@ -1,7 +1,7 @@
 package com.janusa.mvi.mvi.screen
 
 import com.janusa.mvi.mvi.helpers.FileTemplate
-import org.jetbrains.kotlin.util.capitalizeDecapitalize.capitalizeAsciiOnly
+import com.janusa.mvi.mvi.helpers.capitalize
 
 object UpdaterSupportFile : SupportFile(
     "updaters",
@@ -35,13 +35,13 @@ class UpdaterFromStateTemplate(
     featurePackage: String,
     basePackage: String
 ) : FileTemplate(
-    title = "${valueName.capitalizeAsciiOnly()}${UpdaterSupportFile.suffix}",
+    title = "${valueName.capitalize()}${UpdaterSupportFile.suffix}",
     content = (if (basePackage.isNotBlank()) "import $basePackage.BaseUpdater\n" else "") +
             "import $featurePackage.${feature}State\n" +
             "\n" +
-            "class ${valueName.capitalizeAsciiOnly()}Updater(private val new${valueName.capitalizeAsciiOnly()}: $valueType) : BaseUpdater<${feature}State> {\n" +
+            "class ${valueName.capitalize()}Updater(private val new${valueName.capitalize()}: $valueType) : BaseUpdater<${feature}State> {\n" +
             "    override fun performUpdate(prevState: ${feature}State): ${feature}State {\n" +
-            "        return prevState.copy($valueName = new${valueName.capitalizeAsciiOnly()})\n" +
+            "        return prevState.copy($valueName = new${valueName.capitalize()})\n" +
             "    }\n" +
             "}",
 )
