@@ -3,8 +3,8 @@ package com.janusa.mvi.mvi.screen
 import com.intellij.psi.PsiElement
 import com.janusa.mvi.mvi.helpers.FeatureObtainer
 import com.janusa.mvi.mvi.helpers.FileTemplate
+import com.janusa.mvi.mvi.helpers.decapitalize
 import com.janusa.mvi.mvi.helpers.getFileName
-import org.jetbrains.kotlin.util.capitalizeDecapitalize.decapitalizeAsciiOnly
 
 const val screenFileSuffix = "Screen"
 
@@ -28,7 +28,7 @@ class ScreenTemplate(
             "@Destination${if (firstScreen) "(start = true)" else ""}\n" +
             "@Composable\n" +
             "fun ${name}Screen(navigator: DestinationsNavigator) {\n" +
-            "\tval viewModel = ${name.decapitalizeAsciiOnly()}ViewModel()\n" +
+            "\tval viewModel = ${name.decapitalize()}ViewModel()\n" +
             "\tMVIScreen(navigator = navigator, viewModel = viewModel${if (initAction) ", Init${name}Action()" else ""}) { ${name}ScreenContent(it, viewModel.performAction) }\n" +
             "}\n" +
             "\n" +
@@ -69,7 +69,7 @@ class ViewModelTemplate(name: String, basePackage: String) : FileTemplate(
             "\n" +
             "class ${name}ViewModel : MVIViewModel<${name}State>(${name}State())\n" +
             "\n" +
-            "@Composable fun ${name.decapitalizeAsciiOnly()}ViewModel(\n" +
+            "@Composable fun ${name.decapitalize()}ViewModel(\n" +
             "    viewModelStoreOwner: ViewModelStoreOwner = checkNotNull(LocalViewModelStoreOwner.current) {\n" +
             "        \"No ViewModelStoreOwner was provided via LocalViewModelStoreOwner\"\n" +
             "    },\n" +

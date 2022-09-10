@@ -11,19 +11,15 @@ repositories {
     mavenCentral()
 }
 
-apply(plugin = "kotlin")
-
 // Configure Gradle IntelliJ Plugin
 // Read more: https://plugins.jetbrains.com/docs/intellij/tools-gradle-intellij-plugin.html
 intellij {
-    version.set("2022.2.1")
-    type.set("IC") // Target IDE Platform
-
-    plugins.set(listOf("org.jetbrains.kotlin"))
+    type.set("AI") // Target IDE Platform
+    localPath.set("/Applications/Android Studio Preview.app/Contents")
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-compiler-embeddable:1.3.72")
+    implementation("org.jetbrains.kotlin:kotlin-compiler-embeddable:1.7.10")
 }
 
 tasks {
@@ -37,7 +33,7 @@ tasks {
     }
 
     patchPluginXml {
-        sinceBuild.set("213")
+        sinceBuild.set("221")
         untilBuild.set("223.*")
     }
 
